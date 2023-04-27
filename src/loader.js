@@ -6,7 +6,7 @@ const allocateMemory = function(size) {
 }
 
 const load = function(program) {
-  const memory = allocateMemory(30);
+  const memory = allocateMemory(12);
 
   for(let index = 0; index < program.length; index++) {
     memory[index] = program[index]; 

@@ -1,12 +1,13 @@
 const {readFileSync} = require('fs');
-const {add} = require('./operations.js');
+const {add, assign, jump} = require('./operations.js');
 const {load} = require('./loader.js');
 
-const programStringified = readFileSync('./code.json', 'utf-8');
-const program = JSON.parse(programStringified);
+const code = require('./code.json');
 
 const instructionSet = {
-  '1': add 
+  '0': assign,
+  '1': add,
+  '3': jump
 }
 
 const determineOperation = function({memory, programCounter}) {
@@ -14,17 +15,23 @@ const determineOperation = function({memory, programCounter}) {
   return instructionSet[opcode];
 }
 
-const run = function(program) {
-  const memory = load(program);
-  let state = { memory, programCounter: 0 };
+const isNotHalt = function({programCounter, memory}) {
+  const instruction = memory[programCounter];
+  return instruction !== 9;
+}
 
-  const HALT = 9;
-  while(memory[state.programCounter] !== HALT) {
+const run = function(code) {
+  const memory = load(code);
+  const state = { memory, programCounter: 0 };
+
+  while(isNotHalt(state)) {
     let operation = determineOperation(state);
-    state = operation(state);
+    operation(state);
   }
 
   formatOutput(state.memory);
+
+  return state.memory;
 }
 
 const formatOutput = function(list) {
@@ -33,5 +40,6 @@ const formatOutput = function(list) {
   })
 }
 
-run(program);
+//run(code);
 
+exports.run = run;
