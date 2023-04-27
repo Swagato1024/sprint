@@ -1,5 +1,5 @@
 const {readFileSync} = require('fs');
-const {add, assign, jump} = require('./operations.js');
+const {add, assign, jump, jumpLessThan} = require('./operations.js');
 const {load} = require('./loader.js');
 
 const code = require('./code.json');
@@ -7,7 +7,8 @@ const code = require('./code.json');
 const instructionSet = {
   '0': assign,
   '1': add,
-  '3': jump
+  '3': jump,
+  '5': jumpLessThan
 }
 
 const determineOperation = function({memory, programCounter}) {

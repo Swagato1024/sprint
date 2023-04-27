@@ -24,8 +24,27 @@ const assign = function(state) {
 }
 
 const jump = function(state) {
+  const {programCounter: baseAddress, memory} = state;
+  const destination = memory[baseAddress + 1];
+
+  state.programCounter = destination;
+
+  return state;
+}
+
+const jumpLessThan = function(state) {
+  const {programCounter: baseAddress, memory} = state;
+
+  const lhs = memory[memory[baseAddress + 1]];
+  const rhs = memory[memory[baseAddress + 2]];
+  const destination = lhs < rhs ? memory[baseAddress + 3] : baseAddress + 4;
+
+  state.programCounter = destination; 
+
+  return state;
 }
 
 exports.add = add;
 exports.assign = assign;
 exports.jump = jump;
+exports.jumpLessThan = jumpLessThan;
