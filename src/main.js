@@ -63,12 +63,8 @@ const generateSymbolTable = function(symbols) {
 
 const run = function(code) {
   const tokens = tokenize(code);
-  console.log(tokens);
   const symbolTable = generateSymbolTable(tokens);
-  console.table(symbolTable);
   const lexemes = parse(symbolTable, tokens);
-
-  console.log(lexemes);
 
   const memory = load(lexemes);
   const state = { memory, programCounter: 0 };
